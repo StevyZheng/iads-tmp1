@@ -2,6 +2,23 @@ package config
 
 import "fmt"
 
+func LoadDefaultConfig() Config {
+	cfg := Config{}
+	cfg.Gorm.DBType = "mysql"
+	cfg.Gorm.Debug = true
+	cfg.MySQL.Host = "127.0.0.1"
+	cfg.MySQL.Port = 3306
+	cfg.MySQL.User = "root"
+	cfg.MySQL.Password = "000000"
+	cfg.MySQL.DBName = "iads"
+	if cfg.Gorm.DBType == "mysql" {
+		cfg.Gorm.DSN = cfg.MySQL.DSN()
+	} else if cfg.Gorm.DBType == "sqlite3" {
+		cfg.Gorm.DSN = cfg.Sqlite3.DSN()
+	}
+	return cfg
+}
+
 // Config 配置参数
 type Config struct {
 	Web     Web
