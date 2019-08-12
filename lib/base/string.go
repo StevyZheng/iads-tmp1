@@ -16,10 +16,10 @@ func Trim(srcStr string, trimStr string) string {
 }
 
 func ContainStr(src string, dist string) bool {
-	ret := strings.Index(src, dist)
+	ret := strings.Index(dist, src)
 	if ret < 0 {
 		return false
-	}else{
+	} else {
 		return true
 	}
 }
@@ -103,13 +103,17 @@ func UniqStringList(strList []string) []string {
 
 func StrToInt(src string) int {
 	tmp, err := strconv.Atoi(src)
-	if err != nil{ panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	return tmp
 }
 
 func StrToInt64(src string) int64 {
 	tmp, err := strconv.ParseInt(src, 10, 64)
-	if err != nil{ panic(err) }
+	if err != nil {
+		panic(err)
+	}
 	return tmp
 }
 

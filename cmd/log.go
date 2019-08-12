@@ -9,7 +9,7 @@ import (
 
 func init() {
 	rootCmd.AddCommand(logCmd)
-	logCmd.AddCommand(errCmd)
+	logCmd.AddCommand(eventCmd)
 }
 
 var logCmd = &cobra.Command{
@@ -17,19 +17,21 @@ var logCmd = &cobra.Command{
 	Short: "log functions",
 }
 
-var errCmd = &cobra.Command{
-	Use:   "err",
+var eventCmd = &cobra.Command{
+	Use:   "event",
 	Short: "print err log",
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("start print event list:")
 		msg := linux.NewMessages()
 		err := msg.LoadEvent("/var/log/messages")
-		if err != nil{
+		if err != nil {
 			log.Panic(err)
 		}
-		for i:=0; i<msg.EventList.Size();i++{
-			fmt.Println(msg.EventList.Get(i))
+		it := msg.EventList.Iterator()
+		for it.Next() {
+			fmt.Println(it.Value())
 		}
-		
+
 		/*lib.InitEnv()
 		arr, err := lib.AnalysisLogFile("/var/log/messages")
 		if err != nil {

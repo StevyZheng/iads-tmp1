@@ -11,7 +11,7 @@ import (
 
 var MsgMap = map[string]string{}
 
-func FillMsgMap(){
+func FillMsgMap() {
 	MsgMap["Initializing cgroup subsys cpuset"] = "system start"
 	MsgMap["BIOS bug"] = "BIOS bug"
 	MsgMap["mlx5_core"] = "mlx5 fw"
@@ -19,15 +19,15 @@ func FillMsgMap(){
 }
 
 type LogLine struct {
-	Month string
-	Day int
-	Hour int
-	Minute int
-	Second int
-	Host string
+	Month   string
+	Day     int
+	Hour    int
+	Minute  int
+	Second  int
+	Host    string
 	Speaker string
 	Context string
-	Status string
+	Status  string
 }
 
 func NewLogLine(month string, day int, hour int, minute int, second int, host string, speaker string, context string) *LogLine {
@@ -55,7 +55,7 @@ func NewLine(line string) *LogLine {
 	result.Host = arr[3]
 	result.Speaker = arr[4]
 	tmp := ""
-	for i := 5; i < len(arr); i++{
+	for i := 5; i < len(arr); i++ {
 		tmp = tmp + " " + arr[i]
 	}
 	result.Context = tmp
@@ -63,7 +63,7 @@ func NewLine(line string) *LogLine {
 }
 
 type Messages struct {
-	MsgList *arraylist.List
+	MsgList   *arraylist.List
 	EventList *arraylist.List
 }
 
@@ -74,24 +74,25 @@ func NewMessages() *Messages {
 	return msgs
 }
 
-func (m *Messages)LoadEvent(filePath string) error {
+func (m *Messages) LoadEvent(filePath string) error {
+	FillMsgMap()
 	f, err := os.Open(filePath)
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
 	buf := bufio.NewReader(f)
 	for {
 		lineStr, err := buf.ReadString('\n')
-		if err != nil{
-			if err == io.EOF{
+		if err != nil {
+			if err == io.EOF {
 				return nil
 			}
 			return err
 		}
 		lineStr = strings.TrimSpace(lineStr)
-		for k, v := range MsgMap{
-			if true == base.ContainStr(k, lineStr){
+		for k, v := range MsgMap {
+			if true == base.ContainStr(k, lineStr) {
 				line := NewLine(lineStr)
 				line.Status = v
 				m.EventList.Add(line)
@@ -101,9 +102,9 @@ func (m *Messages)LoadEvent(filePath string) error {
 	return nil
 }
 
-func (m *Messages)LoadMessages(filePath string) error {
+func (m *Messages) LoadMessages(filePath string) error {
 	f, err := os.Open(filePath)
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
@@ -113,8 +114,8 @@ func (m *Messages)LoadMessages(filePath string) error {
 		lineStr = strings.TrimSpace(lineStr)
 		line := NewLine(lineStr)
 		m.AddLine(*line)
-		if err != nil{
-			if err == io.EOF{
+		if err != nil {
+			if err == io.EOF {
 				return nil
 			}
 			return err
@@ -123,12 +124,10 @@ func (m *Messages)LoadMessages(filePath string) error {
 	return nil
 }
 
-func (m *Messages)AddLine(line LogLine) {
+func (m *Messages) AddLine(line LogLine) {
 	m.MsgList.Add(line)
 }
 
-func (m *Messages)DelLine(index int) {
+func (m *Messages) DelLine(index int) {
 	m.MsgList.Remove(index)
 }
-
-
