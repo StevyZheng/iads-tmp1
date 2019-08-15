@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"iads/server/internals/app/manager"
 	//"iads/server"
 	//"iads/server/model"
 )
@@ -16,5 +17,6 @@ var serverCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		//model.CreateTable()
 		//server.ServerStart()
+		manager.Run("")
 	},
 }

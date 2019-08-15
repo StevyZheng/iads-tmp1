@@ -6,7 +6,9 @@ require (
 	cloud.google.com/go v0.39.0 // indirect
 	github.com/Microsoft/go-winio v0.4.12 // indirect
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
+	github.com/ahmetb/go-linq v3.0.0+incompatible
 	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc
+	github.com/casbin/casbin v1.9.1
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/chfenger/goNum v0.0.0-20190530013633-17a6c6a4dae0
 	github.com/coocood/freecache v1.1.0
@@ -50,6 +52,7 @@ require (
 	github.com/smartystreets/assertions v1.0.0 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190330032615-68dc04aab96a // indirect
 	github.com/spf13/cobra v0.0.4
+	github.com/spf13/viper v1.3.2
 	github.com/swaggo/swag v1.5.0
 	github.com/ugorji/go v1.1.5-pre // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

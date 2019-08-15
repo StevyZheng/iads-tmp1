@@ -2,7 +2,7 @@ package common
 
 import (
 	"github.com/jinzhu/gorm"
-	"iads/server/internal/pkg/models/db"
+	"iads/server/internals/pkg/models/db"
 )
 
 // Create
