@@ -25,15 +25,13 @@ func Run(configPath string) {
 		configPath = "./config.yaml"
 	}
 	// 加载配置
-	config, err := webconfig.LoadConfig(configPath)
-	if err != nil {
-		panic(err)
-	}
+	config := webconfig.LoadDefaultConfig()
+
 	logger.InitLog("debug", "./log/logb.log")
 	initDB(config)
 	common.InitCsbinEnforcer()
 	initWeb(config)
-	logger.Debug(config.Web.Domain + "站点已启动...")
+	logger.Debug(config.Web.Domain + "Api Server已启动...")
 }
 
 func initDB(config *config.Config) {

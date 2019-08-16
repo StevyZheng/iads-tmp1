@@ -5,6 +5,32 @@ import (
 	"iads/server/internals/pkg/config"
 )
 
+func LoadDefaultConfig() *config.Config {
+	cfg := &config.Config{}
+
+	cfg.Web.StaticPath = ""
+	cfg.Web.Port = 8080
+	cfg.Web.ReadTimeout = 0
+	cfg.Web.WriteTimeout = 0
+	cfg.Web.IdleTimeout = 0
+
+	cfg.Gorm.DBType = "mysql"
+	cfg.Gorm.Debug = true
+	cfg.MySQL.Host = "127.0.0.1"
+	cfg.MySQL.Port = 3306
+	cfg.MySQL.User = "root"
+	cfg.MySQL.Password = "000000"
+	cfg.MySQL.DBName = "iads"
+	cfg.MySQL.Parameters = ""
+
+	if cfg.Gorm.DBType == "mysql" {
+		cfg.Gorm.DSN = cfg.MySQL.DSN()
+	} else if cfg.Gorm.DBType == "sqlite3" {
+		cfg.Gorm.DSN = cfg.Sqlite3.DSN()
+	}
+	return cfg
+}
+
 // 加载配置
 func LoadConfig(fpath string) (c *config.Config, err error) {
 	v := viper.New()
