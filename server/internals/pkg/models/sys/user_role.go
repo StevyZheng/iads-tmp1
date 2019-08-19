@@ -16,7 +16,7 @@ type UserRole struct {
 
 // 表名
 func (UserRole) TableName() string {
-	return TableName("admins_role")
+	return TableName("user_role")
 }
 
 // 添加前

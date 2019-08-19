@@ -1,6 +1,7 @@
 package manager
 
 import (
+	common_z "iads/server/pkg/common"
 	"net/http"
 	"time"
 
@@ -22,16 +23,16 @@ import (
 // 运行
 func Run(configPath string) {
 	if configPath == "" {
-		configPath = "./config.yaml"
+		configPath = "./cfg.yaml"
 	}
 	// 加载配置
-	config := webconfig.LoadDefaultConfig()
+	cfg := webconfig.LoadDefaultConfig()
 
 	logger.InitLog("debug", "./log/logb.log")
-	initDB(config)
-	common.InitCsbinEnforcer()
-	initWeb(config)
-	logger.Debug(config.Web.Domain + "Api Server已启动...")
+	initDB(cfg)
+	_ = common.InitCsbinEnforcer()
+	initWeb(cfg)
+	logger.Debug(cfg.Web.Domain + "Api Server已启动...")
 }
 
 func initDB(config *config.Config) {
@@ -45,10 +46,10 @@ func initWeb(config *config.Config) {
 	app.NoRoute(middleware.NoRouteHandler())
 	// 崩溃恢复
 	app.Use(middleware.RecoveryMiddleware())
-	app.LoadHTMLGlob(config.Web.StaticPath + "dist/*.html")
-	app.Static("/static", config.Web.StaticPath+"dist/static")
-	app.Static("/resource", config.Web.StaticPath+"resource")
-	app.StaticFile("/favicon.ico", config.Web.StaticPath+"dist/favicon.ico")
+	//app.LoadHTMLGlob(config.Web.StaticPath + "dist/*.html")
+	//app.Static("/static", config.Web.StaticPath+"dist/static")
+	//app.Static("/resource", config.Web.StaticPath+"resource")
+	//app.StaticFile("/favicon.ico", config.Web.StaticPath+"dist/favicon.ico")
 	// 注册路由
 	routers.RegisterRouter(app)
 	go initHTTPServer(config, app)
@@ -61,7 +62,8 @@ func initHTTPServer(config *config.Config, handler http.Handler) {
 		Handler:      handler,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  15 * time.Second,
+		//IdleTimeout:  15 * time.Second,
 	}
-	_ = srv.ListenAndServe()
+	err := srv.ListenAndServe()
+	common_z.CheckErr(err)
 }
